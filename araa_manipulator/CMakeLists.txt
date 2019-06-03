@@ -8,15 +8,24 @@ project(araa_manipulator)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  moveit_msgs
+  moveit_commander
+  moveit_core
+  moveit_ros_planning
+  moveit_ros_planning_interface
+	clear_motoman_mh5_moveit_config
   roscpp
   rospy
   std_msgs
 )
 
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED system filesystem date_time thread)
 
-
+catkin_package(
+  CATKIN_DEPENDS roscpp moveit_msgs
+  moveit_core
+  moveit_ros_planning_interface
+  )
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -105,7 +114,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES araa_manipulator
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+#  CATKIN_DEPENDS moveit roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -115,10 +124,12 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
+include_directories(SYSTEM ${Boost_INCLUDE_DIR} ${EIGEN_INCLUDE_DIRS})
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
-)
+  )
+
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
